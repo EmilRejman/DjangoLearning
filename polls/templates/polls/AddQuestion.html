@@ -29,7 +29,7 @@
                     {{form.choice_text}}
                     {% comment %}<div class="input-group-append">{% endcomment %}
                     <div class="input-group-append">
-                        <button class="btn btn-succes add-form-row">+</button>
+                        <button type="button", class="btn btn-succes add-form-row">+</button>
                     </div>
                 </div>
             </div>
@@ -66,6 +66,7 @@
         if (el.id) el.id = el.id.replace(id_regex, replacement);
         if (el.name) el.name = el.name.replace(id_regex, replacement);
     }
+
     function cloneMore(selector, prefix) {
         var newElement = $(selector).clone(true);
         var total = $('#id_' + prefix + '-TOTAL_FORMS').val();
@@ -95,9 +96,10 @@
         .html('<span class="glyphicon glyphicon-minus" aria-hidden="true"></span>');
         return false;
     }
+
     function deleteForm(prefix, btn) {
         var total = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
-        if (total > 1){
+        if (Number(total) > Number($('#id_' + prefix + '-MIN_NUM_FORMS').val())){
             btn.closest('.form-row').remove();
             var forms = $('.form-row');
             $('#id_' + prefix + '-TOTAL_FORMS').val(forms.length);
@@ -109,10 +111,15 @@
         }
         return false;
     }
+
     $(document).on('click', '.add-form-row', function(e){
-        e.preventDefault();
-        cloneMore('.form-row:last', 'form');
-        return false;
+        if(Number($('#id_form-TOTAL_FORMS').val()) < Number($('#id_form-MAX_NUM_FORMS').val())) {
+            e.preventDefault();
+            cloneMore('.form-row:last', 'form');
+            return false;
+        } else {
+        console.log('too much forms')
+        }
     });
     $(document).on('click', '.remove-form-row', function(e){
         e.preventDefault();
