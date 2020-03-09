@@ -90,10 +90,10 @@
         $('#id_' + prefix + '-TOTAL_FORMS').val(total);
         $(selector).after(newElement);
         var conditionRow = $('.form-row:not(:last)');
-        conditionRow.find('.btn.add-form-row')
-        .removeClass('btn-success').addClass('btn-danger')
+        a=conditionRow.find('.btn.add-form-row');
+        a.removeClass('btn-success').addClass('btn-danger')
         .removeClass('add-form-row').addClass('remove-form-row')
-        .html('<span class="glyphicon glyphicon-minus" aria-hidden="true"></span>');
+        .html('<span class="glyphicon glyphicon-minus" aria-hidden="true">-</span>');
         return false;
     }
 
