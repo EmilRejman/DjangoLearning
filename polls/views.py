@@ -1,3 +1,4 @@
+import hashlib
 from builtins import super
 import datetime
 from django.contrib.auth.decorators import login_required, permission_required
@@ -13,6 +14,8 @@ from django.utils import timezone
 from django.db.models import Count
 from .forms import AddQuestionForm, ChoiceFormSet
 from django.forms import formset_factory
+from django.utils.http import is_safe_url
+
 
 
 
@@ -136,12 +139,15 @@ def AddQuestion(request):
                                     min_num=2, validate_min=True, can_delete=True)"""
 
     if request.method == 'POST':
+        print('\n\n',request.POST,'\n\n',request.POST.get('csrfmiddlewaretoken').encode('utf-8'),'\n\n',request.session,'\n\n')
 
         # Create a form instance and populate it with data from the request (binding):
         form = AddQuestionForm(request.POST)
 
         ChoicesFormset = ChoiceFormSet(request.POST) #request.FILES for files upload handling
 
+        # hashstring = hashlib.sha1(request.POST.get('csrfmiddlewaretoken').encode('utf-8'))  ## This is going to be unique
+        # if request.session.get('sesionform') != hashstring:
         # Check if the form is valid:
         if form.is_valid() and ChoicesFormset.is_valid():
             question_instance = Question(question_text = form.cleaned_data['question_text'],\
@@ -156,6 +162,8 @@ def AddQuestion(request):
                 choice_instance = Choice(question = question_instance, choice_text = answer.cleaned_data['choice_text'])
                 choice_instance.save()
 
+            #check if redirect URL is safe
+            print(is_safe_url(reverse('polls:index'),allowed_hosts=None))
             # redirect to a new URL:
             return HttpResponseRedirect(reverse('polls:index'))
 

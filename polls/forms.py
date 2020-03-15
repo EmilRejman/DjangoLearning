@@ -5,7 +5,7 @@ import datetime
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy
 import re
-from .models import Choice
+from .models import Choice, Question
 
 
 class AddQuestionForm(forms.Form):
@@ -20,6 +20,9 @@ class AddQuestionForm(forms.Form):
 
     def clean_question_text(self):
         data = self.cleaned_data['question_text']
+
+        if Question.objects.filter(question_text=data).exists():
+            raise ValidationError(ugettext_lazy('Question text allredy exists!'))
 
         # check if data is empty
         if data == '':
