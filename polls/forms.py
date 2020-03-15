@@ -61,7 +61,7 @@ class ChoiceForm(forms.ModelForm):
     class Meta:
         model = Choice
         fields = ['choice_text']
-        labels = {'choice_text': ugettext_lazy('Your answer')}
+        labels = {'choice_text': ugettext_lazy('Your answer:')}
         initial = {'choice_text': ugettext_lazy('answer...')}
         help_text = {'choice_text': ugettext_lazy('100 chars max')}
 

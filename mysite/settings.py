@@ -32,12 +32,14 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'polls.apps.PollsConfig',
+    'register.apps.RegisterConfig',
     'django.contrib.admin',
     'django.contrib.auth',  #Core authentication framework and its default models.
     'django.contrib.contenttypes', #Django content type system (allows permissions to be associated with models).
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -115,6 +117,11 @@ USE_L10N = True
 USE_TZ = True
 
 STATIC_URL = '/static/' #defing static URL
+STATICFILES_DIRS = [ #for global static files for global templates, templates of each app will inherit from global templates
+    os.path.join(BASE_DIR, "static"),
+]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
@@ -123,7 +130,7 @@ STATIC_URL = '/static/' #defing static URL
 LOGIN_REDIRECT_URL = '/polls/'
 
 #two way registration:
-ACCOUNT_ACTIVATION_DAYS = 1 # one day activation window
+ACCOUNT_ACTIVATION_DAYS = 1 # one day activation window for registration with registration with email adress
 
 #sending email link to console so this can be tested
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

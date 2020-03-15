@@ -6,9 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     <!-- Add additional CSS in static file -->
-
-
+{% load static %}
+{% load crispy_forms_tags %}
+<link rel="stylesheet" type="text/css" href="{% static '/style.css' %}">
 </head>
 <body>
 <div class="container-fluid">
@@ -30,7 +32,7 @@
             You are logged in<br>
             <!--            href defines link destination, we get link from urls with name "logout" it is done, and after the user seccesfully
               loggs out, the next link takes it back to the current page, because request has the same link //adds the url at the end of url-->
-            <a href="{% url 'logout'%}?next={{request.path}}">Logout</a><br>
+            <a href="{% url 'logout'%}?next={% url 'polls:index' %}">Logout</a><br>
             {% else %}
             You are logged out<br>
             <a href="{% url 'login'%}?next={{request.path}}">Login</a><br>

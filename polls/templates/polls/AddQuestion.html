@@ -3,8 +3,10 @@
 {% block content %}
 {% load static %}
 <script src="{% static 'polls/js/app.js' %}"></script>
-
-
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+      integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<!-- to use crispyforms we need to add this line below -->
+{% load crispy_forms_tags %}
 <form action="" method="post">
     {% csrf_token %}
 
@@ -14,12 +16,13 @@
 
     <h3>FormSet of choices Start</h3>
 
-    {% comment %} {{ choices.errors }} is for each answer <[{}, {}, {}]> {% endcomment %}
+    {% comment %} {{ choices.errors }} is for all answers <[{}, {}, {}]> {% endcomment %}
     {% comment %} choices.management_form is needed for formsets to work {% endcomment %}
     {{ choices.management_form }}
     <div id="form_set">
         {{ choices.non_form_errors }}
         {% for form in choices.forms %}
+
         <div class="row form-row spacer">
             <div class="col-2">
                 <label>{{form.choice_text.label}}</label>
@@ -27,17 +30,22 @@
             <div class="col-4">
                 <div class="input-group">
                     {{form.choice_text}}
-                    {% comment %}<div class="input-group-append">{% endcomment %}
                     <div class="input-group-append">
-                        <button type="button", class="btn btn-succes add-form-row">+</button>
+                        <button type="button" , class="btn btn-succes add-form-row">+</button>
                     </div>
                 </div>
             </div>
+            <div class="col-4">
+                <label>{{form.choice_text.errors}}</label>
+            </div>
         </div>
+
         {% endfor %}
     </div>
-    {% comment %} <input type="button" value="Add More" id="add_more">{% endcomment %}
-    <input type="button" value="Add More" id="add_more">
+
+
+    {% comment %} <input type="button" value="Add More" id="add_more"> button to only add forms as table,
+    first script in java below{% endcomment %}
     <div id="empty_form" style="display:none">
         <table class='no_error'>
             {{ choices.empty_form }}
@@ -50,6 +58,7 @@
 
 <script type="text/javascript" src="{% static 'polls/jquery-3.4.1.min.js'%}"></script>
 <script>
+<!-- below function is for adding forms in table form -->
     $('#add_more').click(function() {
     console.log("im in jquery script to add form to formset");
     var form_idx = $('#id_form-TOTAL_FORMS').val();
@@ -91,6 +100,7 @@
         $(selector).after(newElement);
         var conditionRow = $('.form-row:not(:last)');
         a=conditionRow.find('.btn.add-form-row');
+        console.log(a)
         a.removeClass('btn-success').addClass('btn-danger')
         .removeClass('add-form-row').addClass('remove-form-row')
         .html('<span class="glyphicon glyphicon-minus" aria-hidden="true">-</span>');
@@ -126,6 +136,12 @@
         deleteForm('form', $(this));
         return false;
     });
+
+
+
+
+
+
 
 </script>
 
