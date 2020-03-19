@@ -64,7 +64,10 @@ class IndexView(generic.ListView):
         we need to remember (if needed) to get context from parents class
         """
         # we return 5 latests questions which date is allready released
-        return Question.objects.filter(pub_date__lte=timezone.now()).annotate(choice_count=Count('choice')).filter(choice_count__gte=1).order_by('-pub_date')[:5]
+        if self.request.user.is_authenticated:
+            return Question.objects.filter(pub_date__lte=timezone.now()).annotate(choice_count=Count('choice')).filter(choice_count__gte=1).order_by('-pub_date')[:5]
+        else:
+            return None
 
         #pub_date__lte <- "less then or equal to" && number of choices greater than or equal to 1
 
