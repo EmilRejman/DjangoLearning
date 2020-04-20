@@ -12,17 +12,16 @@ class AddQuestionForm(forms.Form):
     question_text = forms.CharField(help_text="Enter a question text, not longer then 200 signs", \
                                     label="question text")
 
-    myDate = timezone.now()
     pub_date = forms.DateTimeField(help_text="Enter a publication date, not in past, \
         if in future the question will be shown after the date", \
-                                   label="publication date and time", initial=myDate )
+                                   label="publication date and time", initial=timezone.now )
 
 
     def clean_question_text(self):
         data = self.cleaned_data['question_text']
 
         if Question.objects.filter(question_text=data).exists():
-            raise ValidationError(ugettext_lazy('Question text allredy exists!'))
+            raise ValidationError(ugettext_lazy('Did you click post 2 times? Question text allredy exists!'))
 
         # check if data is empty
         if data == '':

@@ -17,22 +17,24 @@ from django.contrib import admin, auth
 from django.urls import include, path
 from django_registration.backends.one_step.views import RegistrationView
 from register import views as register_views
+from django.views.generic import RedirectView
 
 
 urlpatterns = [
     path('polls/', include('polls.urls')), # include() function allows referencing other URLconfs.
     path('admin/', admin.site.urls),
-    path('', include('django.contrib.auth.urls')), #for login, logout, password management
-    path('accounts/', include('django_registration.backends.one_step.urls')), # for registration
+
+    # path('accounts/', include('django_registration.backends.one_step.urls')), # for registration
     # django_registration_register is the account-registration view.
     # django_registration_complete is the post-registration success message.
     # django_registration_activate is the account-activation view.
     # django_registration_activation_complete is the post-activation success message.
     # django_registration_disallowed is a message indicating registration is not currently permitted.
-    path('accounts/register/',
-        RegistrationView.as_view(success_url='/polls/'), #default is "/profile/" #set the sucessful forwarding
-        name='django_registration_register'),
-
+    # path('accounts/register/',
+    #     RegistrationView.as_view(success_url='/polls/'), #default is "/profile/" #set the sucessful forwarding
+    #     name='django_registration_register'),
+    path('', include('django.contrib.auth.urls')), #for login, logout, password management
     #registration as different app
     path('register/', register_views.register, name="register"),
+    path('', RedirectView.as_view(url='polls/', permanent=True)),
 ]

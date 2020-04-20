@@ -75,7 +75,7 @@ class IndexView(generic.ListView):
     # to use different context we overload the get_context_data method
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get the context
-        context = super(IndexView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
 
         # Number of visits to this view, as counted in the session variable.
         num_visits = self.request.session.get('num_visits', 0)
@@ -99,7 +99,8 @@ class DetailView(LoginRequiredMixin,generic.DetailView): #used to let to this UR
         """
         Excludes any questions that aren't published yet.
         """
-        return Question.objects.filter(pub_date__lte=timezone.now())
+        return Question.objects.filter(pub_date__lte=timezone.now())  # it is DetailView thats why we dont use
+        # choice_set because we allready have object
 
 
 class ResultsView(generic.DetailView):

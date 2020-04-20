@@ -128,6 +128,7 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 # Redirect to home URL after login (Default redirects to /accounts/profile/)
 LOGIN_REDIRECT_URL = '/polls/'
+LOGIN_URL = '/login/'  # important if we used model based views and want to redirect if not allowed link
 
 #two way registration:
 ACCOUNT_ACTIVATION_DAYS = 1 # one day activation window for registration with registration with email adress

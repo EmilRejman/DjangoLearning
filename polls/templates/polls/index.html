@@ -6,9 +6,9 @@
 <link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}">
 
 <!-- object_list is querryset data passed by request, because if we change context using generic it's better to use official names-->
-{% if object_list %}
+{% if latest_question_list %}
     <ul>
-    {% for question in object_list %}
+    {% for question in latest_question_list %}
 <!--        <li><a href="/polls/{{ question.id }}/">{{ question.question_text }}</a></li>-->
 <!--        dzięki rozwiązaniu ponizej nie uzywamy URL bezpośrednio tylko z nazwy z polls\urls.py i nie musimy zmieniac templateu :)))) -->
         <li><a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></li>
