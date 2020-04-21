@@ -15,6 +15,8 @@ from django.db.models import Count
 from .forms import AddQuestionForm, ChoiceFormSet
 from django.forms import formset_factory
 from django.utils.http import is_safe_url
+from django.views.decorators.cache import cache_page
+
 
 
 
@@ -49,10 +51,12 @@ def results(request, question_id):
 '''
 
 #new way with views
+
 class IndexView(generic.ListView):
+    paginate_by = 5
     template_name = 'polls/index.html' #Similarly, the ListView generic view uses a default template called <app name>/<model name>_list.html;
     # we use template_name to tell ListView to use our existing "polls/index.html" template.
-    context_object_name = 'latest_question_list' #context_object_name attribute, specifying that we want to use latest_question_list instead.
+    #context_object_name = 'latest_question_list' #context_object_name attribute, specifying that we want to use latest_question_list instead.
     #thats why we know what name to use in .html file
     #otherwise it would be named "object_list"
 
@@ -65,9 +69,9 @@ class IndexView(generic.ListView):
         """
         # we return 5 latests questions which date is allready released
         if self.request.user.is_authenticated:
-            return Question.objects.filter(pub_date__lte=timezone.now()).annotate(choice_count=Count('choice')).filter(choice_count__gte=1).order_by('-pub_date')[:5]
+            return Question.objects.filter(pub_date__lte=timezone.now()).annotate(choice_count=Count('choice')).filter(choice_count__gte=1).order_by('-pub_date')
         else:
-            return None
+            return []
 
         #pub_date__lte <- "less then or equal to" && number of choices greater than or equal to 1
 
@@ -135,6 +139,7 @@ def vote(request, question_id):
         #redirect helps to avoid hardcoding URL , given name where we want to pass controll and arguments
 
 #The add question process will be writing to our database, so, by convention, we use the POST request approach.
+# for class based view we need PermisionRequiredMixin and variable permission_required = 'catalog.can_mark_returned'
 @permission_required('question.can_add_question')
 def AddQuestion(request):
     # If this is a POST request then process the Form data

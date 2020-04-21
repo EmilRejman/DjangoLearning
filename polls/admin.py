@@ -19,9 +19,10 @@ class QuestionAdmin(admin.ModelAdmin):
                     'was_published_recently')  # this part of code is displayed not in description of Question
     # but in the list of all questions
 
-    list_filter = ['pub_date']  # with this we can filter the Questions by its pub_date
+    list_filter = ['pub_date',]  # with this we can filter the Questions by its pub_date
 
-    search_fields = ['question_text']
+    search_fields = ['question_text', 'pub_date']
 
 
 admin.site.register(Question, QuestionAdmin)
+# or add @admin.register(Question) over the QuestionAdmin, it will work the same

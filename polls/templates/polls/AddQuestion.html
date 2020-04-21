@@ -7,7 +7,7 @@
       integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 <!-- to use crispyforms we need to add this line below -->
 {% load crispy_forms_tags %}
-<form action="" method="post">
+<form action="" method="post"> <!-- action = '' so it will be transfered back to the same url -->
     {% csrf_token %}
 
     <table>
